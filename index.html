@@ -3,7 +3,10 @@
 <html>
 <body>
 <h3>Here are your sensors</h3>
-<p id="sensors">Nope</p>
+<h2>SENSOR FOR DEVICEORIENTATION:</h2>
+<p id="orientation">Nope</p>
+<h2>SENSOR FOR LIGHT:</h2>
+<p id="light">Nope</p>
 
 <script type="application/javascript">
 
@@ -12,15 +15,22 @@
             const rotateDegrees = event.alpha; // alpha: rotation around z-axis
             const leftToRight = event.gamma; // gamma: left to right
             const frontToBack = event.beta; // beta: front back motion
-
-            handleOrientationEvent(frontToBack, leftToRight, rotateDegrees);
+            document.querySelector("#orientation").innerHTML = "Front-Back: " + frontToBack +
+                " Left-Right:" + leftToRight + " Rotation: " + rotateDegrees;
         }, true);
     }
 
-    const handleOrientationEvent = (frontToBack, leftToRight, rotateDegrees) => {
-        document.querySelector("#sensors").innerHTML = "Front-Back: " + frontToBack +
-            " Left-Right:" + leftToRight + " Rotation: " + rotateDegrees;
-    };
+    if ("AmbientLightSensor" in window) {
+        const sensor = new AmbientLightSensor();
+        sensor.addEventListener("reading", (event) => {
+            console.log("Current light level:", sensor.illuminance);
+            documet.querySelector("#light").innerHTML = sensor.illuminance;
+        });
+        sensor.addEventListener("error", (event) => {
+            console.log(event.error.name, event.error.message);
+        });
+        sensor.start();
+    }
 
 </script>
 </body>
