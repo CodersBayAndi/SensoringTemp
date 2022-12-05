@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 
 <html>
+<head>
+
+</head>
 <body>
 <h3>Here are your sensors</h3>
 <h2>SENSOR FOR DEVICEORIENTATION:</h2>
@@ -57,10 +60,10 @@
     //     documet.querySelector("#accelerometer").innerHTML = "X: " + acl.x + " Y: " + acl.y + " Z: " + acl.z;
     // });
 
-    document.querySelector("#light").innerHTML = JSON.stringify(window.AmbientLightSensor);
-    document.querySelector("#proxy").innerHTML = JSON.stringify(window.ProximitySensor);
-    document.querySelector("#accelerometer").innerHTML = JSON.stringify(window.Accelerometer);
-    document.querySelector("#gyroscope").innerHTML = JSON.stringify(window.Gyroscope);
+    document.querySelector("#light").innerHTML = JSON.stringify(document.featurePolicy.allowsFeature("ambientLightSensor"));
+    document.querySelector("#proxy").innerHTML = JSON.stringify(document.featurePolicy.allowsFeature("proximitySensor"));
+    document.querySelector("#accelerometer").innerHTML = JSON.stringify(document.featurePolicy.allowsFeature("accelerometer"));
+    document.querySelector("#gyroscope").innerHTML = JSON.stringify(document.featurePolicy.allowsFeature("gyroscope"));
     // acl.start();
 
 </script>
