@@ -7,6 +7,8 @@
 <p id="orientation">Nope</p>
 <h2>SENSOR FOR LIGHT:</h2>
 <p id="light">Nope</p>
+<h2>SENSOR FOR ACCElERATION:</h2>
+<p id="accelerometer">Nope</p>
 
 <script type="application/javascript">
 
@@ -31,7 +33,16 @@
             documet.querySelector("#light").innerHTML = sensor.illuminance;
         });
         sensor.start();
+    } else {
+        documet.querySelector("#light").innerHTML = "No such sensor";
     }
+
+    const acl = new Accelerometer({ frequency: 60 });
+    acl.addEventListener("reading", () => {
+        documet.querySelector("#accelerometer").innerHTML = "X: " + acl.x + " Y: " + acl.y + " Z: " + acl.z;
+    });
+
+    acl.start();
 
 </script>
 </body>
