@@ -20,6 +20,8 @@
 <p id="light">Nope</p>
 <h2>SENSOR FOR ACCElERATION:</h2>
 <p id="accelerometer">Nope</p>
+<p id="proxy">Nope</p>
+<p id="gyroscope">Nope</p>
 
 <script type="application/javascript">
 
@@ -28,34 +30,38 @@
             const rotateDegrees = event.alpha; // alpha: rotation around z-axis
             const leftToRight = event.gamma; // gamma: left to right
             const frontToBack = event.beta; // beta: front back motion
-            document.querySelector("#orientation_x").innerHTML = parseFloat(frontToBack).toString(2);
-            document.querySelector("#orientation_y").innerHTML = parseFloat(leftToRight).toString(2);
-            document.querySelector("#orientation_z").innerHTML = parseFloat(rotateDegrees).toString(2);
+            document.querySelector("#orientation_x").innerHTML = parseFloat(frontToBack).toFixed(2);
+            document.querySelector("#orientation_y").innerHTML = parseFloat(leftToRight).toFixed(2);
+            document.querySelector("#orientation_z").innerHTML = parseFloat(rotateDegrees).toFixed(2);
         }, true);
     }
 
-    if ("AmbientLightSensor" in window) {
-        documet.querySelector("#light").innerHTML = "No such sensor";
-        const sensor = new AmbientLightSensor();
-        sensor.addEventListener("reading", (event) => {
-            console.log("Current light level:", sensor.illuminance);
-            documet.querySelector("#light").innerHTML = sensor.illuminance;
-        });
-        sensor.addEventListener("error", (event) => {
-            console.log(event.error.name, event.error.message);
-            documet.querySelector("#light").innerHTML = sensor.illuminance;
-        });
-        sensor.start();
-    }
-
-    const acl = new Accelerometer({ frequency: 60 });
-    documet.querySelector("#accelerometer").innerHTML = JSON.stringify(acl);
+    // if ("AmbientLightSensor" in window) {
+    //     documet.querySelector("#light").innerHTML = "No such sensor";
+    //     const sensor = new AmbientLightSensor();
+    //     sensor.addEventListener("reading", (event) => {
+    //         console.log("Current light level:", sensor.illuminance);
+    //         documet.querySelector("#light").innerHTML = sensor.illuminance;
+    //     });
+    //     sensor.addEventListener("error", (event) => {
+    //         console.log(event.error.name, event.error.message);
+    //         documet.querySelector("#light").innerHTML = sensor.illuminance;
+    //     });
+    //     sensor.start();
+    // }
+    //
+    // const acl = new Accelerometer({ frequency: 60 });
+    // documet.querySelector("#accelerometer").innerHTML = JSON.stringify(acl);
 
     // acl.addEventListener("reading", () => {
     //     documet.querySelector("#accelerometer").innerHTML = "X: " + acl.x + " Y: " + acl.y + " Z: " + acl.z;
     // });
 
-    acl.start();
+    document.querySelector("#light").innerHTML = JSON.stringify(window.AmbientLightSensor);
+    document.querySelector("#proxy").innerHTML = JSON.stringify(window.ProximitySensor);
+    document.querySelector("#accelerometer").innerHTML = JSON.stringify(window.Accelerometer);
+    document.querySelector("#gyroscope").innerHTML = JSON.stringify(window.Gyroscope);
+    // acl.start();
 
 </script>
 </body>
