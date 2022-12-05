@@ -4,7 +4,18 @@
 <body>
 <h3>Here are your sensors</h3>
 <h2>SENSOR FOR DEVICEORIENTATION:</h2>
-<p id="orientation">Nope</p>
+<div>
+    <span>X-Orienation: </span>
+    <span id="orientation_x">No X Orientation</span>
+</div>
+<div>
+    <span>Y-Orienation: </span>
+    <span id="orientation_y">No Y Orientation</span>
+</div>
+<div>
+    <span>Z-Orienation: </span>
+    <span id="orientation_z">No Z Orientation</span>
+</div>
 <h2>SENSOR FOR LIGHT:</h2>
 <p id="light">Nope</p>
 <h2>SENSOR FOR ACCElERATION:</h2>
@@ -17,12 +28,14 @@
             const rotateDegrees = event.alpha; // alpha: rotation around z-axis
             const leftToRight = event.gamma; // gamma: left to right
             const frontToBack = event.beta; // beta: front back motion
-            document.querySelector("#orientation").innerHTML = "Front-Back: " + frontToBack +
-                " Left-Right:" + leftToRight + " Rotation: " + rotateDegrees;
+            document.querySelector("#orientation_x").innerHTML = parseFloat(frontToBack).toString(2);
+            document.querySelector("#orientation_y").innerHTML = parseFloat(leftToRight).toString(2);
+            document.querySelector("#orientation_z").innerHTML = parseFloat(rotateDegrees).toString(2);
         }, true);
     }
 
     if ("AmbientLightSensor" in window) {
+        documet.querySelector("#light").innerHTML = "No such sensor";
         const sensor = new AmbientLightSensor();
         sensor.addEventListener("reading", (event) => {
             console.log("Current light level:", sensor.illuminance);
@@ -33,14 +46,14 @@
             documet.querySelector("#light").innerHTML = sensor.illuminance;
         });
         sensor.start();
-    } else {
-        documet.querySelector("#light").innerHTML = "No such sensor";
     }
 
     const acl = new Accelerometer({ frequency: 60 });
-    acl.addEventListener("reading", () => {
-        documet.querySelector("#accelerometer").innerHTML = "X: " + acl.x + " Y: " + acl.y + " Z: " + acl.z;
-    });
+    documet.querySelector("#accelerometer").innerHTML = JSON.stringify(acl);
+
+    // acl.addEventListener("reading", () => {
+    //     documet.querySelector("#accelerometer").innerHTML = "X: " + acl.x + " Y: " + acl.y + " Z: " + acl.z;
+    // });
 
     acl.start();
 
