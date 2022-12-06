@@ -94,6 +94,15 @@
     document.querySelector("#gyroscope").innerHTML = JSON.stringify(document.featurePolicy.allowsFeature("gyroscope"));
     // acl.start();
 
+    function listener(event) {
+        console.log(event);
+    }
+
+    sensor = new Accelerometer();
+    sensor.addEventListener('reading', listener);
+    sensor.start();
+
+
 </script>
 </body>
 <html>
