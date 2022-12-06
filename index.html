@@ -19,6 +19,20 @@
     <span>Z-Orienation: </span>
     <span id="orientation_z">No Z Orientation</span>
 </div>
+
+<h2>SENSOR FOR DEVICEMOTION:</h2>
+<div>
+    <span>X-Orienation: </span>
+    <span id="motion_x">No X Orientation</span>
+</div>
+<div>
+    <span>Y-Orienation: </span>
+    <span id="motion_y">No Y Orientation</span>
+</div>
+<div>
+    <span>Z-Orienation: </span>
+    <span id="motion_z">No Z Orientation</span>
+</div>
 <h2>SENSOR FOR LIGHT:</h2>
 <p id="light">Nope</p>
 <h2>SENSOR FOR ACCElERATION:</h2>
@@ -38,6 +52,20 @@
             document.querySelector("#orientation_z").innerHTML = parseFloat(rotateDegrees).toFixed(2);
         }, true);
     }
+
+    function handleMotionEvent(event) {
+
+        const x = event.accelerationIncludingGravity.x;
+        const y = event.accelerationIncludingGravity.y;
+        const z = event.accelerationIncludingGravity.z;
+
+        document.querySelector("#motion_x").innerHTML = parseFloat(frontToBack).toFixed(2);
+        document.querySelector("#motion_y").innerHTML = parseFloat(leftToRight).toFixed(2);
+        document.querySelector("#motion_z").innerHTML = parseFloat(rotateDegrees).toFixed(2);
+        // Do something awesome.
+    }
+
+    window.addEventListener("devicemotion", handleMotionEvent, true);
 
     // if ("AmbientLightSensor" in window) {
     //     documet.querySelector("#light").innerHTML = "No such sensor";
@@ -65,6 +93,12 @@
     document.querySelector("#accelerometer").innerHTML = JSON.stringify(document.featurePolicy.allowsFeature("accelerometer"));
     document.querySelector("#gyroscope").innerHTML = JSON.stringify(document.featurePolicy.allowsFeature("gyroscope"));
     // acl.start();
+
+    if ("AmbientLightSensor" in window) {
+        alert("Has ambient");
+    } else {
+        alert("doenst have");
+    }
 
 </script>
 </body>
