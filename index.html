@@ -98,13 +98,20 @@
         document.querySelector("#gyroscope").innerHTML = JSON.stringify(event);
     }
 
-
+    function listener3(event) {
+        document.querySelector("#proxy").innerHTML = JSON.stringify(event);
+    }
+    
     sensor = new Accelerometer();
     sensor.addEventListener('reading', listener);
     sensor.start();
 
     sensor = new Gyroscope()
     sensor.addEventListener('reading', listener2)
+    sensor.start()
+
+    sensor = new LinearAccelerationSensor()
+    sensor.addEventListener('reading', listener3)
     sensor.start()
 
 </script>
