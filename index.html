@@ -94,9 +94,18 @@
         document.querySelector("#accelerometer").innerHTML = JSON.stringify(event);
     }
 
+    function listener2(event) {
+        document.querySelector("#gyroscope").innerHTML = JSON.stringify(event);
+    }
+
+
     sensor = new Accelerometer();
     sensor.addEventListener('reading', listener);
     sensor.start();
+
+    sensor = new Gyroscope()
+    sensor.addEventListener('reading', listener2)
+    sensor.start()
 
 </script>
 </body>
