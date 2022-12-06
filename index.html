@@ -88,20 +88,15 @@
     //     documet.querySelector("#accelerometer").innerHTML = "X: " + acl.x + " Y: " + acl.y + " Z: " + acl.z;
     // });
 
-    document.querySelector("#light").innerHTML = JSON.stringify(document.featurePolicy.allowsFeature("ambientLightSensor"));
-    document.querySelector("#proxy").innerHTML = JSON.stringify(document.featurePolicy.allowsFeature("proximitySensor"));
-    document.querySelector("#accelerometer").innerHTML = JSON.stringify(document.featurePolicy.allowsFeature("accelerometer"));
-    document.querySelector("#gyroscope").innerHTML = JSON.stringify(document.featurePolicy.allowsFeature("gyroscope"));
     // acl.start();
 
     function listener(event) {
-        console.log(event);
+        document.querySelector("#accelerometer").innerHTML = JSON.stringify(event);
     }
 
     sensor = new Accelerometer();
     sensor.addEventListener('reading', listener);
     sensor.start();
-
 
 </script>
 </body>
