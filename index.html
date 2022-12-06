@@ -59,9 +59,9 @@
         const y = event.accelerationIncludingGravity.y;
         const z = event.accelerationIncludingGravity.z;
 
-        document.querySelector("#motion_x").innerHTML = parseFloat(frontToBack).toFixed(2);
-        document.querySelector("#motion_y").innerHTML = parseFloat(leftToRight).toFixed(2);
-        document.querySelector("#motion_z").innerHTML = parseFloat(rotateDegrees).toFixed(2);
+        document.querySelector("#motion_x").innerHTML = parseFloat(x).toFixed(2);
+        document.querySelector("#motion_y").innerHTML = parseFloat(y).toFixed(2);
+        document.querySelector("#motion_z").innerHTML = parseFloat(z).toFixed(2);
         // Do something awesome.
     }
 
