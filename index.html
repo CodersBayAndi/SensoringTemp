@@ -33,20 +33,14 @@
     <span>Z-Orienation: </span>
     <span id="motion_z">No Z Orientation</span>
 </div>
-<h2>SENSOR FOR LIGHT:</h2>
-<p id="light">Nope</p>
-<h2>SENSOR FOR ACCElERATION:</h2>
-<p id="accelerometer">Nope</p>
-<p id="proxy">Nope</p>
-<p id="gyroscope">Nope</p>
 
 <table>
     <tr>
-        <td>API used</td>
+        <td>Accessing:</td>
         <td id="moApi"></td>
     </tr>
     <tr>
-        <td>linear acceleration (excl. gravity)</td>
+        <td>linear acceleration</td>
         <td id="moAccel"></td>
     </tr>
     <tr>
@@ -70,7 +64,7 @@
 
         let lastReadingTimestamp;
         let accelerometer = new LinearAccelerationSensor();
-        accelerometer.addEventListener('reading', e => {
+        accelerometer.addEventListener('reading', () => {
             if (lastReadingTimestamp) {
                 intervalHandler(Math.round(accelerometer.timestamp - lastReadingTimestamp));
             }
@@ -81,12 +75,12 @@
 
         if ('GravitySensor' in window) {
             let gravity = new GravitySensor();
-            gravity.addEventListener('reading', e => accelerationHandler(gravity, 'moAccelGrav'));
+            gravity.addEventListener('reading', () => accelerationHandler(gravity, 'moAccelGrav'));
             gravity.start();
         }
 
         let gyroscope = new Gyroscope();
-        gyroscope.addEventListener('reading', e => rotationHandler({
+        gyroscope.addEventListener('reading', () => rotationHandler({
             alpha: gyroscope.x,
             beta: gyroscope.y,
             gamma: gyroscope.z
@@ -111,18 +105,18 @@
     function accelerationHandler(acceleration, targetId) {
         var info, xyz = "[X, Y, Z]";
 
-        info = xyz.replace("X", acceleration.x && acceleration.x.toFixed(3));
-        info = info.replace("Y", acceleration.y && acceleration.y.toFixed(3));
-        info = info.replace("Z", acceleration.z && acceleration.z.toFixed(3));
+        info = xyz.replace("X", acceleration.x && acceleration.x.toFixed(2));
+        info = info.replace("Y", acceleration.y && acceleration.y.toFixed(2));
+        info = info.replace("Z", acceleration.z && acceleration.z.toFixed(2));
         document.getElementById(targetId).innerHTML = info;
     }
 
     function rotationHandler(rotation) {
         var info, xyz = "[X, Y, Z]";
 
-        info = xyz.replace("X", rotation.alpha && rotation.alpha.toFixed(3));
-        info = info.replace("Y", rotation.beta && rotation.beta.toFixed(3));
-        info = info.replace("Z", rotation.gamma && rotation.gamma.toFixed(3));
+        info = xyz.replace("X", rotation.alpha && rotation.alpha.toFixed(2));
+        info = info.replace("Y", rotation.beta && rotation.beta.toFixed(2));
+        info = info.replace("Z", rotation.gamma && rotation.gamma.toFixed(2));
         document.getElementById("moRotation").innerHTML = info;
     }
 
