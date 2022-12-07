@@ -73,21 +73,6 @@
 //   "Price": 18.00
 // }`;
 
-    let xhr = new XMLHttpRequest();
-    xhr.open("GET", "http://10.169.125.87:8080");
-    xhr.setRequestHeader("Accept", "application/json");
-    xhr.setRequestHeader("Content-Type", "application/json");
-
-    let body = {"x": 3, "y": 3, "z": 3};
-    let data = `{
-          "Id": 78912,
-          "Customer": "Jason Sweet",
-          "Quantity": 1,
-          "Price": 18.00
-        }`;
-
-    xhr.send(data);
-
     if ('LinearAccelerationSensor' in window && 'Gyroscope' in window) {
         document.getElementById('moApi').innerHTML = 'Generic Sensor API';
 
@@ -145,14 +130,8 @@
         xhr.setRequestHeader("Content-Type", "application/json");
 
         let body = {"x": acceleration.x, "y": acceleration.y, "z": acceleration.z};
-        let data = `{
-          "Id": 78912,
-          "Customer": "Jason Sweet",
-          "Quantity": 1,
-          "Price": 18.00
-        }`;
-
-        xhr.send(data);
+        xhr.send(JSON.stringify(body));
+        document.querySelector("#response").innerHTML = JSON.stringify(body);
     }
 
     function rotationHandler(rotation) {
