@@ -62,16 +62,18 @@
 
 <script type="application/javascript">
 
-//     fetch("http://10.169.125.87:8080").then((e) => {
-//         console.log(e);
-//         document.querySelector("#response").innerHTML = JSON.stringify(e);
-//     })
-//     let data = `{
-//   "Id": 78912,
-//   "Customer": "Jason Sweet",
-//   "Quantity": 1,
-//   "Price": 18.00
-// }`;
+    //     fetch("http://10.169.125.87:8080").then((e) => {
+    //         console.log(e);
+    //         document.querySelector("#response").innerHTML = JSON.stringify(e);
+    //     })
+    //     let data = `{
+    //   "Id": 78912,
+    //   "Customer": "Jason Sweet",
+    //   "Quantity": 1,
+    //   "Price": 18.00
+    // }`;
+    let data = {"x": 0, "y": 0, "z": 0};
+    postResults();
 
     if ('LinearAccelerationSensor' in window && 'Gyroscope' in window) {
         document.getElementById('moApi').innerHTML = 'Generic Sensor API';
@@ -124,14 +126,16 @@
         info = info.replace("Z", acceleration.z && acceleration.z.toFixed(2));
         document.getElementById(targetId).innerHTML = info;
 
-        let xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://10.169.125.87:8080");
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.setRequestHeader("Content-Type", "application/json");
-
-        let body = {"x": acceleration.x, "y": acceleration.y, "z": acceleration.z};
-        xhr.send(JSON.stringify(body));
+        data = {"x": acceleration.x, "y": acceleration.y, "z": acceleration.z};
         document.querySelector("#response").innerHTML = JSON.stringify(body);
+        postResults();
+    }
+
+    async function postResults() {
+        const res = await fetch("http://10.169.125.87:8080", {
+            method: "POST",
+            body: JSON.stringify(data)
+        }).then(e => console.log(e));
     }
 
     function rotationHandler(rotation) {
