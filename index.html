@@ -58,9 +58,20 @@
         <td id="moInterval"></td>
     </tr>
 </table>
-<p>Added json post</p>
+<p id="response">Added json post</p>
 
 <script type="application/javascript">
+
+    fetch("10.169.125.87:8080").then((e) => {
+        console.log(e);
+        document.querySelector("#response").innerHTML = JSON.stringify(e);
+    })
+    let data = `{
+  "Id": 78912,
+  "Customer": "Jason Sweet",
+  "Quantity": 1,
+  "Price": 18.00
+}`;
 
     if ('LinearAccelerationSensor' in window && 'Gyroscope' in window) {
         document.getElementById('moApi').innerHTML = 'Generic Sensor API';
