@@ -58,7 +58,8 @@
         <td id="moInterval"></td>
     </tr>
 </table>
-<p id="response">Added json post</p>
+<p id="response">waiting for response</p>
+<p id="status">Status</p>
 
 <script type="application/javascript">
 
@@ -127,10 +128,13 @@
         document.getElementById(targetId).innerHTML = info;
 
         data = {"x": acceleration.x, "y": acceleration.y, "z": acceleration.z};
+
+        document.querySelector("#status").innerHTML = "sending sth";
         postResults().then(e => {
             console.log(e);
-            document.querySelector("#response").innerHTML = JSON.stringify(res);
+            document.querySelector("#response").innerHTML = JSON.stringify(e);
         });
+        document.querySelector("#status").innerHTML = "received result i hope";
     }
 
     async function postResults() {
