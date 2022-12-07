@@ -127,7 +127,7 @@
         document.getElementById(targetId).innerHTML = info;
 
         data = {"x": acceleration.x, "y": acceleration.y, "z": acceleration.z};
-        document.querySelector("#response").innerHTML = JSON.stringify(body);
+        document.querySelector("#response").innerHTML = JSON.stringify(data);
         postResults();
     }
 
