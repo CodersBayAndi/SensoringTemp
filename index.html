@@ -134,8 +134,11 @@
         const res = await fetch("http://10.169.125.87:8080", {
             method: "POST",
             body: JSON.stringify(data)
-        }).then(e => console.log(e));
-        document.querySelector("#response").innerHTML = JSON.stringify(res);
+        }).then(e => {
+            console.log(e);
+            document.querySelector("#response").innerHTML = JSON.stringify(res);
+        });
+
     }
 
     function rotationHandler(rotation) {
