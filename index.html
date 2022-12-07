@@ -62,16 +62,31 @@
 
 <script type="application/javascript">
 
-    fetch("10.169.125.87:8080").then((e) => {
-        console.log(e);
-        document.querySelector("#response").innerHTML = JSON.stringify(e);
-    })
+//     fetch("http://10.169.125.87:8080").then((e) => {
+//         console.log(e);
+//         document.querySelector("#response").innerHTML = JSON.stringify(e);
+//     })
+//     let data = `{
+//   "Id": 78912,
+//   "Customer": "Jason Sweet",
+//   "Quantity": 1,
+//   "Price": 18.00
+// }`;
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://10.169.125.87:8080");
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    let body = {"x": 3, "y": 3, "z": 3};
     let data = `{
-  "Id": 78912,
-  "Customer": "Jason Sweet",
-  "Quantity": 1,
-  "Price": 18.00
-}`;
+          "Id": 78912,
+          "Customer": "Jason Sweet",
+          "Quantity": 1,
+          "Price": 18.00
+        }`;
+
+    xhr.send(data);
 
     if ('LinearAccelerationSensor' in window && 'Gyroscope' in window) {
         document.getElementById('moApi').innerHTML = 'Generic Sensor API';
@@ -125,7 +140,7 @@
         document.getElementById(targetId).innerHTML = info;
 
         let xhr = new XMLHttpRequest();
-        xhr.open("POST", "10.169.125.87:8080");
+        xhr.open("POST", "https://10.169.125.87:8080");
         xhr.setRequestHeader("Accept", "application/json");
         xhr.setRequestHeader("Content-Type", "application/json");
 
