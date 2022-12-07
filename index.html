@@ -142,6 +142,7 @@
             method: "POST",
             body: JSON.stringify(data)
         })
+        document.querySelector("#response").innerHTML = "made a post";
         return res.json();
     }
 
