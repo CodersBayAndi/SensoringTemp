@@ -127,7 +127,6 @@
         document.getElementById(targetId).innerHTML = info;
 
         data = {"x": acceleration.x, "y": acceleration.y, "z": acceleration.z};
-        document.querySelector("#response").innerHTML = JSON.stringify(data);
         postResults();
     }
 
@@ -136,6 +135,7 @@
             method: "POST",
             body: JSON.stringify(data)
         }).then(e => console.log(e));
+        document.querySelector("#response").innerHTML = JSON.stringify(res);
     }
 
     function rotationHandler(rotation) {
