@@ -60,11 +60,12 @@
 </table>
 <p id="response">waiting for response</p>
 <p id="status">Status</p>
+Changes:<p id="changes"></p>
 
 <script type="application/javascript">
 
     var http = new XMLHttpRequest();
-    var url = 'http://192.168.0.104:8080';
+    var url = 'https://192.168.0.104:8443';
     http.open('POST', url, true);
 
     http.onreadystatechange = function () {
@@ -80,7 +81,7 @@
     http.setRequestHeader('Content-type', 'application/json');
     http.send("hallo");
 
-    fetch("http://10.169.125.87:8080").then((e) => {
+    fetch("https://192.168.0.104:8443").then((e) => {
         console.log(e);
         document.querySelector("#response").innerHTML = JSON.stringify(e);
     }).catch((error) => {
@@ -151,14 +152,14 @@
         document.querySelector("#status").innerHTML = "received result i hope";
     }
 
-    async function postResults() {
-        const res = await fetch("http://10.169.125.87:8080", {
-            method: "POST",
-            body: JSON.stringify(data)
-        })
-        document.querySelector("#response").innerHTML = "made a post";
-        return res.json();
-    }
+    // async function postResults() {
+    //     const res = await fetch("https://10.169.125.87:8443", {
+    //         method: "POST",
+    //         body: JSON.stringify(data)
+    //     })
+    //     document.querySelector("#response").innerHTML = "made a post";
+    //     return res.json();
+    // }
 
     function rotationHandler(rotation) {
         var info, xyz = "[X, Y, Z]";
