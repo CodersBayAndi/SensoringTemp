@@ -65,7 +65,7 @@ Changes:<p id="changes"></p>
 <script type="application/javascript">
 
     var http = new XMLHttpRequest();
-    var url = 'https://192.168.0.104:8443';
+    var url = 'http://85.214.103.108:8001/';
     http.open('POST', url, true);
 
     http.onreadystatechange = function () {
@@ -81,7 +81,7 @@ Changes:<p id="changes"></p>
     http.setRequestHeader('Content-type', 'application/json');
     http.send("hallo");
 
-    fetch("https://192.168.0.104:8443").then((e) => {
+    fetch("http://85.214.103.108:8001/").then((e) => {
         console.log(e);
         document.querySelector("#response").innerHTML = JSON.stringify(e);
     }).catch((error) => {
@@ -89,7 +89,7 @@ Changes:<p id="changes"></p>
         document.querySelector("#response").innerHTML = JSON.stringify(error);
     });
     let data = {"x": 0, "y": 0, "z": 0};
-    postResults();
+    // postResults();
 
     if ('LinearAccelerationSensor' in window && 'Gyroscope' in window) {
         document.getElementById('moApi').innerHTML = 'Generic Sensor API';
