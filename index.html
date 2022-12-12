@@ -63,7 +63,9 @@
 Changes:<p id="changes"></p>
 VIB:<p id="vib">added vib</p>
 Light:<p id="light">added light</p>
+LightDATA:<p id="light-data">added light</p>
 Lux:<p id="lux">added lux</p>
+LuxDATA:<p id="lux-data">added luxdata</p>
 
 <script type="application/javascript">
 
@@ -82,15 +84,15 @@ Lux:<p id="lux">added lux</p>
 
     if('ondevicelight' in window) {
         window.addEventListener("devicelight", function(event) {
-            //light level is returned in lux units
-
+            document.querySelector("#light").innerHTML = JSON.stringify(event);
+            document.querySelector("#light-data").innerHTML = JSON.stringify(event.data);
         });
     }
 
     if('onlightlevel' in window){
         window.addEventListener("lightlevel", function(event) {
-            //light value can be dim, normal or bright
-            console.log(event.value);
+            document.querySelector("#lux").innerHTML = JSON.stringify(event);
+            document.querySelector("#lux-data").innerHTML = JSON.stringify(event.data);
         });
     }
 
