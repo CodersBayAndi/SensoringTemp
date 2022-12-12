@@ -61,13 +61,38 @@
 <p id="response">waiting for response</p>
 <p id="status">Status</p>
 Changes:<p id="changes"></p>
-Changes:<p id="vib">added vib</p>
+VIB:<p id="vib">added vib</p>
+Light:<p id="light">added light</p>
+Lux:<p id="lux">added lux</p>
 
 <script type="application/javascript">
 
     var http = new XMLHttpRequest();
     var url = 'http://85.214.103.108:8001/';
     http.open('POST', url, true);
+
+    var vibrate = navigator.vibrate || navigator.mozVibrate;
+    document.querySelector("#vib").innerHTML = JSON.stringify(vibrate);
+
+    // vibrate for 1 second
+    vibrate(1000);
+
+    // vibrate for 1 second, then pause for half, then vibrate for another 1 second
+    vibrate([1000, 500, 2000]);
+
+    if('ondevicelight' in window) {
+        window.addEventListener("devicelight", function(event) {
+            //light level is returned in lux units
+
+        });
+    }
+
+    if('onlightlevel' in window){
+        window.addEventListener("lightlevel", function(event) {
+            //light value can be dim, normal or bright
+            console.log(event.value);
+        });
+    }
 
     http.onreadystatechange = function () {
         if (http.readyState === 4) {
@@ -77,14 +102,6 @@ Changes:<p id="vib">added vib</p>
             return false;
         }
     }
-
-    var vibrate = navigator.vibrate || navigator.mozVibrate;
-
-    // vibrate for 1 second
-    vibrate(1000);
-
-    // vibrate for 1 second, then pause for half, then vibrate for another 1 second
-    vibrate([1000, 500, 2000]);
 
     //Send the proper header information along with the request
     http.setRequestHeader('Content-type', 'application/json');
