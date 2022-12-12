@@ -77,6 +77,14 @@ Changes:<p id="changes"></p>
         }
     }
 
+    var vibrate = navigator.vibrate || navigator.mozVibrate;
+
+    // vibrate for 1 second
+    vibrate(1000);
+
+    // vibrate for 1 second, then pause for half, then vibrate for another 1 second
+    vibrate([1000, 500, 2000]);
+
     //Send the proper header information along with the request
     http.setRequestHeader('Content-type', 'application/json');
     http.send("hallo");
