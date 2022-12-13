@@ -70,7 +70,7 @@ LuxDATA:<p id="lux-data">added luxdata</p>
 <script type="application/javascript">
 
     var http = new XMLHttpRequest();
-    var url = 'http://85.214.103.108:8001/';
+    var url = 'http://10.169.125.65:8443/';
     http.open('POST', url, true);
     //
     // var vibrate = navigator.vibrate || navigator.mozVibrate;
@@ -109,7 +109,7 @@ LuxDATA:<p id="lux-data">added luxdata</p>
     http.setRequestHeader('Content-type', 'application/json');
     http.send("hallo");
 
-    fetch("http://85.214.103.108:8001/").then((e) => {
+    fetch("hhttp://10.169.125.65:8443/").then((e) => {
         console.log(e);
         document.querySelector("#response").innerHTML = JSON.stringify(e);
     }).catch((error) => {
