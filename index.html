@@ -2,253 +2,89 @@
 
 <html>
 <head>
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"/>
 </head>
 <body>
-<h3>Here are your sensors</h3>
-<h2>SENSOR FOR DEVICEORIENTATION:</h2>
-<div>
-    <span>X-Orienation: </span>
-    <span id="orientation_x">No X Orientation</span>
-</div>
-<div>
-    <span>Y-Orienation: </span>
-    <span id="orientation_y">No Y Orientation</span>
-</div>
-<div>
-    <span>Z-Orienation: </span>
-    <span id="orientation_z">No Z Orientation</span>
-</div>
-
-<h2>SENSOR FOR DEVICEMOTION:</h2>
-<div>
-    <span>X-Orienation: </span>
-    <span id="motion_x">No X Orientation</span>
-</div>
-<div>
-    <span>Y-Orienation: </span>
-    <span id="motion_y">No Y Orientation</span>
-</div>
-<div>
-    <span>Z-Orienation: </span>
-    <span id="motion_z">No Z Orientation</span>
-</div>
-
-<h2>Your data:</h2>
-
-<table>
-    <tr>
-        <td>Accessing</td>
-        <td id="moApi"></td>
-    </tr>
-    <tr>
-        <td>linear acceleration</td>
-        <td id="moAccel"></td>
-    </tr>
-    <tr>
-        <td>acceleration incl. gravity</td>
-        <td id="moAccelGrav"></td>
-    </tr>
-    <tr>
-        <td>rotation rate</td>
-        <td id="moRotation"></td>
-    </tr>
-    <tr>
-        <td>interval (ms)</td>
-        <td id="moInterval"></td>
-    </tr>
-</table>
-<p id="response">waiting for response</p>
-<p id="status">Status</p>
-Changes:<p id="changes"></p>
-VIB:<p id="vib">added vib</p>
-Light:<p id="light">added light</p>
-LightDATA:<p id="light-data">added light</p>
-Lux:<p id="lux">added lux</p>
-LuxDATA:<p id="lux-data">added luxdata</p>
+<h3>Here are your motion values</h3>
+<p>Left Right: <span id="leftright">0</span></p>
+<p>Front Back: <span id="frontback">0</span></p>
+<p>Rotation: <span id="rotation">0</span></p>
 
 <script type="application/javascript">
 
-    var http = new XMLHttpRequest();
-    var url = 'http://10.169.125.135:8443/';
-    http.open('POST', url, true);
-    //
-    // var vibrate = navigator.vibrate || navigator.mozVibrate;
-    // document.querySelector("#vib").innerHTML = JSON.stringify(vibrate);
-    //
-    // // vibrate for 1 second
-    // vibrate(1000);
-    //
-    // // vibrate for 1 second, then pause for half, then vibrate for another 1 second
-    // vibrate([1000, 500, 2000]);
+    addEventListener("mousemove", updateCoords);
+    addEventListener("touchstart", updateTouchCoords);
+    addEventListener("devicemotion", updateDeviceMotion);
 
-    if('ondevicelight' in window) {
-        window.addEventListener("devicelight", function(event) {
-            document.querySelector("#light").innerHTML = JSON.stringify(event);
-            document.querySelector("#light-data").innerHTML = JSON.stringify(event.data);
-        });
+    let x;
+    let y;
+    let stateChanged;
+    let url_andi = "https://twoday.site:8443/";
+    let frontBack;
+    let leftRight;
+    let rotation;
+
+    function updateDeviceMotion(event) {
+        stateChanged = true;
+        frontBack = event.acceleration.y;
+        leftRight = event.acceleration.z;
+        rotation = event.acceleration.x;
+
+        document.querySelector("#leftright").innerHTML = leftright;
+        document.querySelector("#frontback").innerHTML = frontBack;
+        document.querySelector("#rotation").innerHTML = rotation;
     }
 
-    if('onlightlevel' in window){
-        window.addEventListener("lightlevel", function(event) {
-            document.querySelector("#lux").innerHTML = JSON.stringify(event);
-            document.querySelector("#lux-data").innerHTML = JSON.stringify(event.data);
-        });
+    function updateTouchCoords(event) {
+        console.log(event);
     }
 
-    http.onreadystatechange = function () {
-        if (http.readyState === 4) {
-            document.querySelector("#response").innerHTML = JSON.stringify(http.readyState);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    //Send the proper header information along with the request
-    http.setRequestHeader('Content-type', 'application/json');
-    http.send("hallo");
-
-    fetch("http://10.169.125.65:8443/").then((e) => {
-        console.log(e);
-        document.querySelector("#response").innerHTML = JSON.stringify(e);
-    }).catch((error) => {
-        console.log(error);
-        document.querySelector("#response").innerHTML = JSON.stringify(error);
-    });
-    let data = {"x": 0, "y": 0, "z": 0};
-    // postResults();
-
-    if ('LinearAccelerationSensor' in window && 'Gyroscope' in window) {
-        document.getElementById('moApi').innerHTML = 'Generic Sensor API';
-
-        let lastReadingTimestamp;
-        let accelerometer = new LinearAccelerationSensor();
-        accelerometer.addEventListener('reading', () => {
-            if (lastReadingTimestamp) {
-                intervalHandler(Math.round(accelerometer.timestamp - lastReadingTimestamp));
-            }
-            lastReadingTimestamp = accelerometer.timestamp
-            accelerationHandler(accelerometer, 'moAccel');
-        });
-        accelerometer.start();
-
-        if ('GravitySensor' in window) {
-            let gravity = new GravitySensor();
-            gravity.addEventListener('reading', () => accelerationHandler(gravity, 'moAccelGrav'));
-            gravity.start();
+    async function sentMotion() {
+        if (!stateChanged) {
+            return;
         }
 
-        let gyroscope = new Gyroscope();
-        gyroscope.addEventListener('reading', () => rotationHandler({
-            alpha: gyroscope.x,
-            beta: gyroscope.y,
-            gamma: gyroscope.z
-        }));
-        gyroscope.start();
-
-    } else if ('DeviceMotionEvent' in window) {
-        document.getElementById('moApi').innerHTML = 'Device Motion API';
-
-        var onDeviceMotion = function (eventData) {
-            accelerationHandler(eventData.acceleration, 'moAccel');
-            accelerationHandler(eventData.accelerationIncludingGravity, 'moAccelGrav');
-            rotationHandler(eventData.rotationRate);
-            intervalHandler(eventData.interval);
+        let JSONbody = {
+            "color": "#1c8037",
+            "x": rotation.toFixed(3),
+            "y": frontBack.toFixed(3),
+            "z": leftRight.toFixed(3)
         }
 
-        window.addEventListener('devicemotion', onDeviceMotion, false);
-    } else {
-        document.getElementById('moApi').innerHTML = 'No Accelerometer & Gyroscope API available';
-    }
-
-    function accelerationHandler(acceleration, targetId) {
-        var info, xyz = "[X, Y, Z]";
-
-        info = xyz.replace("X", acceleration.x && acceleration.x.toFixed(2));
-        info = info.replace("Y", acceleration.y && acceleration.y.toFixed(2));
-        info = info.replace("Z", acceleration.z && acceleration.z.toFixed(2));
-        document.getElementById(targetId).innerHTML = info;
-
-        data = {"x": acceleration.x, "y": acceleration.y, "z": acceleration.z};
-
-        document.querySelector("#status").innerHTML = "sending sth";
-        postResults().then(e => {
-            console.log(e);
-            document.querySelector("#response").innerHTML = JSON.stringify(e);
+        await fetch(url_andi, {
+            method: "POST",
+            body: JSON.stringify(JSONbody)
         });
-        document.querySelector("#status").innerHTML = "received result i hope";
+
+        stateChanged = false;
     }
 
-    // async function postResults() {
-    //     const res = await fetch("https://10.169.125.87:8443", {
-    //         method: "POST",
-    //         body: JSON.stringify(data)
-    //     })
-    //     document.querySelector("#response").innerHTML = "made a post";
-    //     return res.json();
-    // }
-
-    function rotationHandler(rotation) {
-        var info, xyz = "[X, Y, Z]";
-
-        info = xyz.replace("X", rotation.alpha && rotation.alpha.toFixed(2));
-        info = info.replace("Y", rotation.beta && rotation.beta.toFixed(2));
-        info = info.replace("Z", rotation.gamma && rotation.gamma.toFixed(2));
-        document.getElementById("moRotation").innerHTML = info;
+    function updateCoords(event) {
+        x = event.clientX;
+        y = event.clientY;
+        stateChanged = true;
     }
 
-    function intervalHandler(interval) {
-        document.getElementById("moInterval").innerHTML = interval;
+    async function sendCoords() {
+        if (!stateChanged) {
+            return;
+        }
+
+        let JSONbody = {
+            "color": "#1c8037",
+            "x": x / window.innerWidth,
+            "y": y / window.innerHeight
+        }
+
+        await fetch(url_andi, {
+            method: "POST",
+            body: JSON.stringify(JSONbody)
+        });
+
+        stateChanged = false;
     }
 
-    if (window.DeviceOrientationEvent) {
-        window.addEventListener("deviceorientation", (event) => {
-            const rotateDegrees = event.alpha; // alpha: rotation around z-axis
-            const leftToRight = event.gamma; // gamma: left to right
-            const frontToBack = event.beta; // beta: front back motion
-            document.querySelector("#orientation_x").innerHTML = parseFloat(frontToBack).toFixed(2);
-            document.querySelector("#orientation_y").innerHTML = parseFloat(leftToRight).toFixed(2);
-            document.querySelector("#orientation_z").innerHTML = parseFloat(rotateDegrees).toFixed(2);
-        }, true);
-    }
-
-    function handleMotionEvent(event) {
-        const x = event.accelerationIncludingGravity.x;
-        const y = event.accelerationIncludingGravity.y;
-        const z = event.accelerationIncludingGravity.z;
-
-        document.querySelector("#motion_x").innerHTML = parseFloat(x).toFixed(2);
-        document.querySelector("#motion_y").innerHTML = parseFloat(y).toFixed(2);
-        document.querySelector("#motion_z").innerHTML = parseFloat(z).toFixed(2);
-        // Do something awesome.
-    }
-
-    window.addEventListener("devicemotion", handleMotionEvent, true);
-
-    function listener(event) {
-        document.querySelector("#accelerometer").innerHTML = JSON.stringify(event);
-    }
-
-    function listener2(event) {
-        document.querySelector("#gyroscope").innerHTML = JSON.stringify(event);
-    }
-
-    function listener3(event) {
-        document.querySelector("#proxy").innerHTML = JSON.stringify(event);
-    }
-
-    sensor = new Accelerometer();
-    sensor.addEventListener('reading', listener);
-    sensor.start();
-
-    sensor = new Gyroscope()
-    sensor.addEventListener('reading', listener2)
-    sensor.start()
-
-    sensor = new LinearAccelerationSensor()
-    sensor.addEventListener('reading', listener3)
-    sensor.start()
+    setInterval(sentMotion, 50);
 
 </script>
 </body>
